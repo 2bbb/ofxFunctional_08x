@@ -35,7 +35,7 @@ and like this.
     h();
     h();
 
-or use *__block* keyword directly like this.
+or use *__block* keyword directly like this. (but we **DON'T** recommend)
 
     __block string str = "";
     function<const string &()> p = ^{ return str += "str"; };
