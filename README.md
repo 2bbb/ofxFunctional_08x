@@ -6,7 +6,7 @@ use functional in v0.8.x in Xcode/clang
 
 first, include.
 
-	#include <ofxFunctional_08x.h>
+	#include "ofxFunctional_08x.h"
 
 and use like this. (this is blocks clang extension)
 	
