@@ -33,3 +33,48 @@
 #endif
 
 #define ofxFunctionalReference(type, name) __block type name
+
+#include <Block.h>
+
+template <typename Res, typename ... Args>
+class ofxFunction {};
+
+template <typename Res, typename ... Args>
+class ofxFunction<Res(Args ...)> : public function<Res(Args ...)> {
+    typedef Res(^BlockType)(Args ...);
+public:
+    ofxFunction()
+    : function<Res(Args ...)>()
+    , f(NULL) {};
+    
+    ofxFunction(const function<Res(Args ...)> &f)
+    : function<Res(Args ...)>(f)
+    , f(NULL) {};
+    
+    ofxFunction(const BlockType &f)
+    : function<Res(Args ...)>(f)
+    , f(Block_copy(f)) {};
+    
+    ofxFunction &operator=(const function<Res(Args ...)> &f) {
+        blockRelease();
+        function<Res(Args ...)> F(f);
+        this->swap(F);
+    }
+    
+    ofxFunction &operator=(const BlockType &f) {
+        blockRelease();
+        this->f = Block_copy(f);
+        function<Res(Args ...)> F(this->f);
+        this->swap(F);
+    }
+    
+    virtual ~ofxFunction() {
+        blockRelease();
+    }
+    
+    inline void blockRelease() {
+        if(f) { Block_release(f); }
+    }
+private:
+    BlockType f;
+};
