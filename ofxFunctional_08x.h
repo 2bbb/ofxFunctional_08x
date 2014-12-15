@@ -31,3 +31,5 @@
     };
 
 #endif
+
+#define ofxFunctionalReference(type, name) __block type name
